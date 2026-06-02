@@ -1,0 +1,210 @@
+# LLMs From Scratch – Environment Setup Log (June 2, 2026)
+
+## Objective
+
+Set up a clean Python environment for working through *Build a Large Language Model (From Scratch)* and successfully launch JupyterLab.
+
+---
+
+## 1. Created a Dedicated Conda Environment
+
+Created a new Conda environment with Python 3.11:
+
+```bash
+conda create -n llm python=3.11
+```
+
+Accepted the Anaconda repository Terms of Service and installed the required base packages.
+
+Activated the environment:
+
+```bash
+conda activate llm
+```
+
+Result:
+
+* Isolated environment created successfully.
+* Python 3.11 installed.
+
+---
+
+## 2. Installed UV Package Manager
+
+Installed UV inside the environment:
+
+```bash
+pip install uv
+```
+
+Purpose:
+
+* Faster Python package installation and dependency management.
+* Useful for future projects, although not required for this book.
+
+Result:
+
+* UV installed successfully.
+
+---
+
+## 3. Cloned the Book Repository
+
+Downloaded the official repository:
+
+```bash
+git clone https://github.com/rasbt/LLMs-from-scratch.git
+```
+
+Moved into the project directory:
+
+```bash
+cd LLMs-from-scratch
+```
+
+Result:
+
+* Full source code and notebooks available locally.
+
+---
+
+## 4. Installed Project Dependencies
+
+Installed all dependencies from the repository:
+
+```bash
+pip install -r requirements.txt
+```
+
+Key packages installed:
+
+* PyTorch
+* TensorFlow
+* JupyterLab
+* NumPy
+* Pandas
+* Matplotlib
+* Tiktoken
+* tqdm
+* psutil
+* Supporting Jupyter ecosystem packages
+
+Notable downloads:
+
+* TensorFlow (~351 MB)
+* PyTorch (~123 MB)
+
+Result:
+
+* Complete project environment installed successfully.
+
+---
+
+## 5. Resolved Windows Python Alias Conflict
+
+Encountered an issue where Windows App Execution Aliases were taking precedence over the intended Python installation.
+
+Problem:
+
+* Windows Store aliases (`python.exe` / `python3.exe`) can intercept Python commands.
+* This may cause incorrect Python resolution or launch the Microsoft Store instead of the Conda environment interpreter.
+
+Resolution:
+
+* Disabled the Windows App Execution Aliases.
+* Ensured Conda's Python installation became the active interpreter.
+
+Location:
+
+```text
+Settings
+→ Apps
+→ Advanced App Settings
+→ App Execution Aliases
+```
+
+Disabled:
+
+* python.exe
+* python3.exe
+
+Result:
+
+* Commands now resolve to the correct Conda environment Python.
+* Prevented future environment conflicts.
+
+---
+
+## 6. Verified Jupyter Installation
+
+Started JupyterLab:
+
+```bash
+jupyter lab
+```
+
+Observed successful startup messages:
+
+* JupyterLab extension loaded
+* Jupyter Server started
+* Jupyter LSP loaded
+* Notebook support loaded
+
+Result:
+
+* JupyterLab launched successfully.
+* Environment ready for notebook execution.
+
+---
+
+## Current Environment Summary
+
+Environment Name:
+
+```text
+llm
+```
+
+Python Version:
+
+```text
+3.11
+```
+
+Main Tools Installed:
+
+* Conda
+* Python 3.11
+* UV
+* Git
+* PyTorch
+* TensorFlow
+* JupyterLab
+* NumPy
+* Pandas
+* Matplotlib
+* Tiktoken
+
+---
+
+## Status
+
+✅ Conda environment created
+
+✅ Python alias conflict resolved
+
+✅ Repository cloned
+
+✅ Dependencies installed
+
+✅ JupyterLab running
+
+✅ Ready to begin Chapter 1 notebooks
+
+---
+
+## Key Learning
+
+A clean and isolated environment is critical before starting ML/LLM development.
+
+The Windows App Execution Alias issue can silently override the intended Python interpreter, so verifying which Python executable is being used is an important troubleshooting step whenever virtual environments appear to behave unexpectedly.
