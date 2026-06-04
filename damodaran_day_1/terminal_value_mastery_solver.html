@@ -1,0 +1,531 @@
+<h2 class="sr-only">Terminal Value Mastery — interactive solution explorer with worked answers and Python code for all exercises including ITC Limited real company task</h2>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); color: var(--color-text-primary); }
+.tabs { display: flex; gap: 6px; flex-wrap: wrap; padding: 1rem 0 0.5rem; border-bottom: 0.5px solid var(--color-border-tertiary); margin-bottom: 1.5rem; }
+.tab { padding: 6px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); font-size: 13px; cursor: pointer; background: var(--color-background-primary); color: var(--color-text-secondary); transition: all 0.15s; }
+.tab.active { background: var(--color-background-info); color: var(--color-text-info); border-color: transparent; font-weight: 500; }
+.tab:hover:not(.active) { background: var(--color-background-secondary); }
+.panel { display: none; }
+.panel.active { display: block; }
+.section-title { font-size: 15px; font-weight: 500; margin-bottom: 0.75rem; }
+.scenario-box { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 1rem; margin-bottom: 1rem; font-size: 13.5px; line-height: 1.6; color: var(--color-text-secondary); border-left: 3px solid var(--color-border-info); }
+.step { margin-bottom: 0.75rem; }
+.step-label { font-size: 12px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 4px; }
+.formula { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 10px 14px; font-family: var(--font-mono); font-size: 13px; color: var(--color-text-primary); }
+.result-card { background: var(--color-background-primary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-lg); padding: 1rem 1.25rem; }
+.result-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 1rem; }
+.metric { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem 1rem; }
+.metric-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.metric-value { font-size: 20px; font-weight: 500; color: var(--color-text-primary); }
+.metric-unit { font-size: 12px; color: var(--color-text-secondary); margin-top: 2px; }
+.insight { background: var(--color-background-success); border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 13px; color: var(--color-text-success); margin-top: 0.75rem; }
+.warning { background: var(--color-background-warning); border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 13px; color: var(--color-text-warning); margin-top: 0.75rem; }
+.danger { background: var(--color-background-danger); border-radius: var(--border-radius-md); padding: 10px 14px; font-size: 13px; color: var(--color-text-danger); margin-top: 0.75rem; }
+pre { background: var(--color-background-secondary); border: 0.5px solid var(--color-border-tertiary); border-radius: var(--border-radius-md); padding: 1rem; font-family: var(--font-mono); font-size: 12px; overflow-x: auto; line-height: 1.6; white-space: pre-wrap; word-break: break-word; margin-top: 0.5rem; }
+.code-label { font-size: 11px; font-weight: 500; color: var(--color-text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 1rem; margin-bottom: 4px; }
+.toggle-code { font-size: 12px; color: var(--color-text-info); cursor: pointer; border: none; background: none; padding: 4px 0; margin-top: 0.5rem; }
+.hidden { display: none; }
+hr { border: none; border-top: 0.5px solid var(--color-border-tertiary); margin: 1.25rem 0; }
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 0.75rem; }
+.compare-col { background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 0.75rem; }
+.compare-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 6px; font-weight: 500; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 0.75rem; }
+th { font-weight: 500; padding: 8px 10px; background: var(--color-background-secondary); text-align: left; font-size: 12px; color: var(--color-text-secondary); }
+td { padding: 7px 10px; border-top: 0.5px solid var(--color-border-tertiary); }
+</style>
+
+<div style="padding: 0 1rem 1rem;">
+<div class="tabs" id="tabs">
+  <button class="tab active" onclick="switchTab('ex1')">Ex 1</button>
+  <button class="tab" onclick="switchTab('ex2')">Ex 2</button>
+  <button class="tab" onclick="switchTab('ex3')">Ex 3</button>
+  <button class="tab" onclick="switchTab('ex4')">Ex 4</button>
+  <button class="tab" onclick="switchTab('ex5')">Ex 5</button>
+  <button class="tab" onclick="switchTab('ex6')">Ex 6</button>
+  <button class="tab" onclick="switchTab('ex7')">Ex 7</button>
+  <button class="tab" onclick="switchTab('ex8')">Ex 8</button>
+  <button class="tab" onclick="switchTab('ex9')">Ex 9</button>
+  <button class="tab" onclick="switchTab('itc')">ITC Ltd</button>
+  <button class="tab" onclick="switchTab('neocrafts')">Neo-Crafts</button>
+</div>
+
+<div id="panel-ex1" class="panel active">
+  <div class="section-title">Exercise 1 — base case mechanics</div>
+  <div class="scenario-box">FCFF₅ = $100M · WACC = 8% · gₙ = 2%</div>
+  <div class="result-card">
+    <div class="step"><div class="step-label">Step 1 — FCFF₆ (Year 6 cash flow)</div>
+      <div class="formula">FCFF₆ = FCFF₅ × (1 + gₙ) = 100 × 1.02 = <strong>$102M</strong></div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">Step 2 — Terminal value at end of Year 5</div>
+      <div class="formula">TV₅ = FCFF₆ / (WACC − gₙ) = 102 / (0.08 − 0.02) = <strong>$1,700M</strong></div></div>
+    <div class="result-grid">
+      <div class="metric"><div class="metric-label">FCFF₆</div><div class="metric-value">$102M</div></div>
+      <div class="metric"><div class="metric-label">TV₅</div><div class="metric-value">$1,700M</div></div>
+      <div class="metric"><div class="metric-label">WACC − g spread</div><div class="metric-value">6%</div></div>
+    </div>
+    <div class="insight">Key intuition: the spread (WACC − g) = 6% is the "denominator driver." A tighter spread explodes terminal value — this is why small changes in gₙ have massive impact.</div>
+  </div>
+  <div class="code-label">Python</div>
+  <pre>fcff5 = 100
+wacc = 0.08
+gn = 0.02
+
+fcff6 = fcff5 * (1 + gn)
+tv5 = fcff6 / (wacc - gn)
+
+print(f"FCFF6: ${fcff6:.1f}M")
+print(f"TV5:   ${tv5:,.0f}M")</pre>
+</div>
+
+<div id="panel-ex2" class="panel">
+  <div class="section-title">Exercise 2 — reinvestment linkage</div>
+  <div class="scenario-box">EBIT(1-t)₁₁ = $250M · gₙ = 3% · ROIC = 10% · WACC = 9%</div>
+  <div class="result-card">
+    <div class="step"><div class="step-label">Step 1 — Reinvestment rate</div>
+      <div class="formula">RR = gₙ / ROIC = 3% / 10% = <strong>30%</strong></div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">Step 2 — FCFF₁₁</div>
+      <div class="formula">FCFF₁₁ = EBIT(1-t) × (1 − RR) = 250 × (1 − 0.30) = <strong>$175M</strong></div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">Step 3 — TV₁₀</div>
+      <div class="formula">TV₁₀ = FCFF₁₁ / (WACC − gₙ) = 175 / (0.09 − 0.03) = <strong>$2,916.67M</strong></div></div>
+    <div class="result-grid">
+      <div class="metric"><div class="metric-label">RR</div><div class="metric-value">30%</div></div>
+      <div class="metric"><div class="metric-label">FCFF₁₁</div><div class="metric-value">$175M</div></div>
+      <div class="metric"><div class="metric-label">TV₁₀</div><div class="metric-value">$2,917M</div></div>
+    </div>
+    <div class="insight">Growth that costs less to achieve (lower RR) produces more free cash. ROIC = 10% > WACC = 9% means every reinvested dollar creates value.</div>
+  </div>
+  <div class="code-label">Python</div>
+  <pre>ebit_at = 250
+gn = 0.03
+roic = 0.10
+wacc = 0.09
+
+rr = gn / roic
+fcff11 = ebit_at * (1 - rr)
+tv10 = fcff11 / (wacc - gn)
+
+print(f"Reinvestment Rate: {rr:.1%}")
+print(f"FCFF11: ${fcff11:.1f}M")
+print(f"TV10:   ${tv10:,.2f}M")</pre>
+</div>
+
+<div id="panel-ex3" class="panel">
+  <div class="section-title">Exercise 3 — degrowing cash cow</div>
+  <div class="scenario-box">FCFF₅ = $80M · gₙ = −2% (shrinking forever) · WACC = 6%</div>
+  <div class="result-card">
+    <div class="step"><div class="step-label">Step 1 — FCFF₆</div>
+      <div class="formula">FCFF₆ = 80 × (1 + (−0.02)) = 80 × 0.98 = <strong>$78.4M</strong></div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">Step 2 — TV₅ with negative growth</div>
+      <div class="formula">TV₅ = FCFF₆ / (WACC − gₙ) = 78.4 / (0.06 − (−0.02)) = 78.4 / 0.08 = <strong>$980M</strong></div></div>
+    <div class="result-grid">
+      <div class="metric"><div class="metric-label">FCFF₆</div><div class="metric-value">$78.4M</div></div>
+      <div class="metric"><div class="metric-label">TV₅</div><div class="metric-value">$980M</div></div>
+      <div class="metric"><div class="metric-label">WACC − g spread</div><div class="metric-value">8%</div></div>
+    </div>
+    <div class="insight">Negative growth actually widens the denominator spread (6% − (−2%) = 8%), making TV lower relative to a flat-growth firm. The minus-minus in the denominator is the key algebraic trap to avoid.</div>
+  </div>
+  <div class="code-label">Python</div>
+  <pre>fcff5 = 80
+gn = -0.02
+wacc = 0.06
+
+fcff6 = fcff5 * (1 + gn)
+tv5 = fcff6 / (wacc - gn)  # note: 0.06 - (-0.02) = 0.08
+
+print(f"FCFF6: ${fcff6:.1f}M")
+print(f"TV5:   ${tv5:,.0f}M")
+print(f"Denominator: {wacc - gn:.2%}")</pre>
+</div>
+
+<div id="panel-ex4" class="panel">
+  <div class="section-title">Exercise 4 — enforcing the growth cap</div>
+  <div class="scenario-box">gₙ proposed = 6.5% USD · Risk-free rate = 4.2% · FCFF₁₀ = $500M · WACC = 9%</div>
+  <div class="result-card">
+    <div class="danger"><strong>Violation:</strong> A 6.5% USD perpetual growth rate exceeds the 4.2% US risk-free rate. No company can grow faster than the overall economy in perpetuity — if it did, it would eventually become the entire economy.</div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">Correct: cap gₙ at risk-free rate = 4.2%</div>
+      <div class="formula">FCFF₁₁ = 500 × 1.042 = $521M</div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">Maximum allowable TV</div>
+      <div class="formula">TV₁₀ = 521 / (0.09 − 0.042) = 521 / 0.048 = <strong>$10,854M</strong></div></div>
+    <div class="compare">
+      <div class="compare-col"><div class="compare-label">❌ Illegal — gₙ = 6.5%</div><div style="font-size:18px;font-weight:500;color:var(--color-text-danger)">$16,750M</div><div style="font-size:11px;color:var(--color-text-secondary)">TV implied</div></div>
+      <div class="compare-col"><div class="compare-label">✓ Corrected — gₙ = 4.2%</div><div style="font-size:18px;font-weight:500;color:var(--color-text-success)">$10,854M</div><div style="font-size:11px;color:var(--color-text-secondary)">Max TV allowed</div></div>
+    </div>
+    <div class="warning">Inflated TV by 54% using an illegal growth rate. A key Damodaran principle: gₙ ≤ nominal risk-free rate of the currency used.</div>
+  </div>
+  <div class="code-label">Python</div>
+  <pre>fcff10 = 500
+wacc = 0.09
+rf = 0.042
+gn_illegal = 0.065
+gn_capped = rf  # enforce ceiling
+
+fcff11 = fcff10 * (1 + gn_capped)
+tv_correct = fcff11 / (wacc - gn_capped)
+
+# What the illegal model would produce
+fcff11_bad = fcff10 * (1 + gn_illegal)
+tv_illegal = fcff11_bad / (wacc - gn_illegal)
+
+print(f"Illegal TV:  ${tv_illegal:,.0f}M  (gn={gn_illegal:.1%})")
+print(f"Corrected TV: ${tv_correct:,.0f}M  (gn capped at rf={rf:.1%})")
+print(f"Overstatement: {(tv_illegal/tv_correct - 1):.1%}")</pre>
+</div>
+
+<div id="panel-ex5" class="panel">
+  <div class="section-title">Exercise 5 — risk transition (changing of the guard)</div>
+  <div class="scenario-box">High-growth EV startup → mature automotive peer. Rf = 4%, ERP = 5%, Tax = 25%</div>
+  <div class="result-card">
+    <div class="section-title" style="font-size:13px;margin-bottom:0.5rem">High-growth WACC</div>
+    <div class="formula">Ke = 4% + 1.8 × 5% = 13.0%  |  Kd(AT) = 8% × (1−0.25) = 6.0%
+WACC = 13.0% × 0.85 + 6.0% × 0.15 = <strong>11.95% ≈ 12.0%</strong></div>
+    <hr>
+    <div class="section-title" style="font-size:13px;margin-bottom:0.5rem">Mature WACC (used to discount TV)</div>
+    <div class="formula">Ke = 4% + 1.05 × 5% = 9.25%  |  Kd(AT) = 5.5% × 0.75 = 4.125%
+WACC = 9.25% × 0.60 + 4.125% × 0.40 = <strong>7.20%</strong></div>
+    <div class="result-grid">
+      <div class="metric"><div class="metric-label">High-growth WACC</div><div class="metric-value">11.95%</div></div>
+      <div class="metric"><div class="metric-label">Mature WACC</div><div class="metric-value">7.20%</div></div>
+    </div>
+    <div class="insight">You MUST use the mature WACC (7.20%) in the terminal value denominator — not the high-growth WACC. The TV represents the firm in stable state at Year 10+, so its risk profile should reflect the mature firm, not the startup.</div>
+  </div>
+  <div class="code-label">Python</div>
+  <pre>rf = 0.04
+erp = 0.05
+tax = 0.25
+
+# High-growth inputs
+beta_hg = 1.8
+kd_hg = 0.08
+d_hg = 0.15
+e_hg = 1 - d_hg
+
+ke_hg = rf + beta_hg * erp
+kd_at_hg = kd_hg * (1 - tax)
+wacc_hg = ke_hg * e_hg + kd_at_hg * d_hg
+
+# Mature inputs
+beta_m = 1.05
+kd_m = 0.055
+d_m = 0.40
+e_m = 1 - d_m
+
+ke_m = rf + beta_m * erp
+kd_at_m = kd_m * (1 - tax)
+wacc_m = ke_m * e_m + kd_at_m * d_m
+
+print(f"High-growth WACC: {wacc_hg:.2%}")
+print(f"Mature WACC:      {wacc_m:.2%}")
+print("→ Use mature WACC in TV denominator")</pre>
+</div>
+
+<div id="panel-ex6" class="panel">
+  <div class="section-title">Exercise 6 — ROIC convergence call</div>
+  <div class="scenario-box">EBIT(1-t)₁₁ = $150M · gₙ = 3% · WACC = 7.5% · Two ROIC scenarios</div>
+  <div class="result-card">
+    <div class="compare">
+      <div class="compare-col">
+        <div class="compare-label">Moat fades: ROIC = WACC = 7.5%</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px">RR = 3%/7.5% = 40%  |  FCFF = 90M</div>
+        <div style="font-size:18px;font-weight:500">$2,000M</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">TV₁₀</div>
+      </div>
+      <div class="compare-col">
+        <div class="compare-label">Moat persists: ROIC = 12%</div>
+        <div style="font-size:11px;color:var(--color-text-secondary);margin-bottom:6px">RR = 3%/12% = 25%  |  FCFF = 112.5M</div>
+        <div style="font-size:18px;font-weight:500;color:var(--color-text-success)">$2,500M</div>
+        <div style="font-size:11px;color:var(--color-text-secondary)">TV₁₀</div>
+      </div>
+    </div>
+    <div class="insight" style="margin-top:0.75rem">The moat scenario produces 25% higher terminal value ($2,500M vs $2,000M). This is purely because a higher ROIC requires less reinvestment to achieve the same 3% growth — freeing up more cash flow. When ROIC = WACC, growth creates zero incremental value.</div>
+  </div>
+  <div class="code-label">Python</div>
+  <pre>ebit_at = 150
+gn = 0.03
+wacc = 0.075
+
+scenarios = {"Moat fades (ROIC=WACC)": 0.075, "Moat persists (ROIC=12%)": 0.12}
+
+for name, roic in scenarios.items():
+    rr = gn / roic
+    fcff = ebit_at * (1 - rr)
+    tv = fcff / (wacc - gn)
+    print(f"{name}: RR={rr:.1%}, FCFF=${fcff:.1f}M, TV=${tv:,.0f}M")
+
+# percentage diff
+tv1, tv2 = [ebit_at*(1-gn/r)/(wacc-gn) for r in scenarios.values()]
+print(f"\nPremium from moat: {(tv2/tv1 - 1):.1%}")</pre>
+</div>
+
+<div id="panel-ex7" class="panel">
+  <div class="section-title">Exercise 7 — reinvestment mismatch paradox</div>
+  <div class="scenario-box">Year 5: Net CapEx = 0 but gₙ = 3.5% projected. EBIT(1-t)₅ = $400M · ROIC = 10% · WACC = 8%</div>
+  <div class="result-card">
+    <div class="danger"><strong>Structural flaw:</strong> Net CapEx = 0 (CapEx = Depreciation) means no reinvestment. But 3.5% growth requires reinvestment. These two assumptions are internally inconsistent — zero investment cannot generate positive growth.</div>
+    <div class="step" style="margin-top:1rem"><div class="step-label">Corrected Year 6 using Damodaran linkage</div>
+      <div class="formula">EBIT(1-t)₆ = EBIT(1-t)₅ × (1 + gₙ) = 400 × 1.035 = $414M
+RR = gₙ / ROIC = 3.5% / 10% = 35%
+FCFF₆ = 414 × (1 − 0.35) = <strong>$269.1M</strong>
+TV₅ = 269.1 / (0.08 − 0.035) = <strong>$5,980M</strong></div></div>
+    <div class="compare">
+      <div class="compare-col"><div class="compare-label">❌ Flawed model (Net CapEx=0)</div><div style="font-size:18px;font-weight:500;color:var(--color-text-danger)">$9,100M</div><div style="font-size:11px;color:var(--color-text-secondary)">FCFF₅×1.035/spread = inflated</div></div>
+      <div class="compare-col"><div class="compare-label">✓ Corrected model</div><div style="font-size:18px;font-weight:500;color:var(--color-text-success)">$5,980M</div><div style="font-size:11px;color:var(--color-text-secondary)">internally consistent</div></div>
+    </div>
+  </div>
+  <div class="code-label">Python</div>
+  <pre>ebit5 = 400
+gn = 0.035
+roic = 0.10
+wacc = 0.08
+
+ebit6 = ebit5 * (1 + gn)
+rr = gn / roic
+fcff6 = ebit6 * (1 - rr)
+tv5 = fcff6 / (wacc - gn)
+
+# What the broken model implies (RR=0)
+tv5_broken = (ebit5*(1+gn)) / (wacc - gn)
+
+print(f"Corrected TV5: ${tv5:,.0f}M  (RR={rr:.0%})")
+print(f"Broken TV5:    ${tv5_broken:,.0f}M  (RR=0%, impossible)")
+print(f"Overstatement: {(tv5_broken/tv5-1):.1%}")</pre>
+</div>
+
+<div id="panel-ex8" class="panel">
+  <div class="section-title">Exercise 8 — growing annuity (finite life)</div>
+  <div class="scenario-box">Biotech: patent expires in 15 years after Year 5. FCFF₆=$120M · WACC=10% · g=2% · t=15 yrs</div>
+  <div class="result-card">
+    <div class="step"><div class="step-label">Growing annuity formula</div>
+      <div class="formula">TV₅ = [FCFF₆/(WACC−g)] × [1 − ((1+g)/(1+WACC))^t]
+     = [120/0.08] × [1 − (1.02/1.10)^15]
+     = 1,500 × [1 − (0.92727)^15]
+     = 1,500 × [1 − 0.3234]
+     = 1,500 × 0.6766
+     = <strong>$1,014.9M</strong></div></div>
+    <div class="result-grid">
+      <div class="metric"><div class="metric-label">Annuity factor</div><div class="metric-value">0.6766</div></div>
+      <div class="metric"><div class="metric-label">TV₅ (finite)</div><div class="metric-value">$1,015M</div></div>
+      <div class="metric"><div class="metric-label">Perpetuity TV₅</div><div class="metric-value">$1,500M</div></div>
+    </div>
+    <div class="warning">The finite life haircut is ~32.3% — nearly a third of value is lost vs a perpetuity assumption. The annuity factor (0.677) captures the present value of 15 years of growing cash flows at WACC.</div>
+  </div>
+  <div class="code-label">Python</div>
+  <pre>fcff6 = 120
+wacc = 0.10
+gn = 0.02
+t = 15
+
+annuity_factor = 1 - ((1 + gn) / (1 + wacc))**t
+tv5 = (fcff6 / (wacc - gn)) * annuity_factor
+
+perp_tv5 = fcff6 / (wacc - gn)  # comparison
+
+print(f"Annuity factor: {annuity_factor:.4f}")
+print(f"TV5 (finite):   ${tv5:,.1f}M")
+print(f"TV5 (perp):     ${perp_tv5:,.1f}M")
+print(f"Haircut from finite life: {(1 - tv5/perp_tv5):.1%}")</pre>
+</div>
+
+<div id="panel-ex9" class="panel">
+  <div class="section-title">Exercise 9 — currency inflation trap</div>
+  <div class="scenario-box">Argentine subsidiary valued in ARS. Local inflation = 20%. ARS risk-free = 22%. Colleague wants gₙ = 4% (USD cap). Correct?</div>
+  <div class="result-card">
+    <div class="danger"><strong>Peer is wrong.</strong> The growth cap is currency-specific. A 4% USD cap applies only to USD-denominated cash flows. ARS cash flows must use the ARS risk-free rate as the growth ceiling.</div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">Correct growth cap for ARS valuation</div>
+      <div class="formula">gₙ(ARS) ≤ Risk-free rate (ARS) = 22%
+
+Using 4% would massively understate the terminal value
+because ARS cash flows reflect 20% inflation — they must
+grow at ~20% just to stay flat in real terms.</div></div>
+    <div class="compare">
+      <div class="compare-col"><div class="compare-label">❌ Peer's approach: USD cap 4% in ARS</div><div style="font-size:12px;color:var(--color-text-secondary)">Wrong currency ceiling applied — deflates TV by ~4x</div></div>
+      <div class="compare-col"><div class="compare-label">✓ Correct: ARS ceiling = 22%</div><div style="font-size:12px;color:var(--color-text-secondary)">Nominal ARS risk-free = inflation proxy + real rate</div></div>
+    </div>
+    <div class="insight">The iron law: gₙ ≤ risk-free rate of the SAME currency. ARS has 22% RF because it embeds 20% expected inflation. A 22% growth cap in ARS ≈ 2% real, which is consistent with the USD cap of ~4%.</div>
+  </div>
+  <div class="code-label">Python</div>
+  <pre>rf_usd = 0.04
+rf_ars = 0.22
+inflation_ars = 0.20
+
+gn_cap_ars = rf_ars   # correct ceiling
+gn_peers = 0.04       # peer's mistake
+
+# Example TV comparison (hypothetical FCFF in ARS billions)
+fcff_next = 1000  # ARS billions
+wacc_ars = 0.30   # hypothetical ARS WACC
+
+tv_correct = fcff_next * (1 + gn_cap_ars) / (wacc_ars - gn_cap_ars)
+tv_wrong = fcff_next * (1 + gn_peers) / (wacc_ars - gn_peers)
+
+print(f"Correct gn cap (ARS): {gn_cap_ars:.0%}")
+print(f"TV using correct cap: {tv_correct:,.0f} ARS B")
+print(f"TV using USD cap 4%:  {tv_wrong:,.0f} ARS B")
+print(f"Understatement error: {(tv_wrong/tv_correct - 1):.1%}")</pre>
+</div>
+
+<div id="panel-itc" class="panel">
+  <div class="section-title">ITC Limited — real company terminal value (FY2025 Annual Report)</div>
+  <div class="scenario-box">Data extracted from standalone P&L and Cash Flow Statement for year ended 31 March 2025 (continuing operations only — hotels demerged)</div>
+
+  <div class="section-title" style="margin-top:1rem;font-size:13px">Step 1 — extract raw data</div>
+  <table>
+    <tr><th>Line item</th><th>Source</th><th>FY2025 (₹ Cr)</th></tr>
+    <tr><td>Profit Before Tax (continuing)</td><td>P&L</td><td>26,528.82</td></tr>
+    <tr><td>Finance Costs (continuing)</td><td>P&L</td><td>36.35</td></tr>
+    <tr><td>EBIT = PBT + Finance Costs</td><td>Computed</td><td><strong>26,565.17</strong></td></tr>
+    <tr><td>Current Tax</td><td>P&L</td><td>5,990.17</td></tr>
+    <tr><td>Effective Tax Rate = Tax/PBT</td><td>Computed</td><td><strong>22.58%</strong></td></tr>
+    <tr><td>EBIT(1-t)</td><td>Computed</td><td><strong>20,573.16</strong></td></tr>
+    <tr><td>Purchase of PP&E (CapEx)</td><td>Cash Flow</td><td>1,788.64</td></tr>
+    <tr><td>Depreciation & Amortization</td><td>Cash Flow</td><td>1,668.88</td></tr>
+    <tr><td>Net CapEx = CapEx − D&A</td><td>Computed</td><td><strong>119.76</strong></td></tr>
+  </table>
+
+  <div class="section-title" style="margin-top:1.25rem;font-size:13px">Step 2 — judgment calls</div>
+  <div class="result-card" style="margin-top:0.5rem">
+    <div class="step"><div class="step-label">Tax rate judgment (Point 1)</div>
+      <div class="formula">Actual effective rate: 5,990/26,529 = 22.58%
+Statutory rate: 25.17%
+→ Normalize to 25.17% for stable phase (conservative, removes one-off credits)</div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">Growth cap (Point 2)</div>
+      <div class="formula">10-yr India G-Sec yield ≈ 7%
+→ We choose gₙ = 5% (mature firm; below 7% ceiling, above long-run GDP)</div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">Stable ROIC (Point 3)</div>
+      <div class="formula">ITC historical ROIC ~30%+ (tobacco monopoly)
+→ Conservative: assume ROIC drifts to 15% as FMCG/Hotels dilute returns
+(not full convergence to WACC — some brand moat preserved)</div></div>
+  </div>
+
+  <div class="section-title" style="margin-top:1.25rem;font-size:13px">Step 3 — terminal value calculation</div>
+  <div class="result-card">
+    <div class="formula">Normalized EBIT(1-t) = 26,565.17 × (1 − 0.2517) = <strong>₹19,877 Cr</strong>
+
+Stable RR = gₙ / ROIC = 5% / 15% = 33.3%
+FCFF_stable = 19,877 × (1 − 0.333) = <strong>₹13,249 Cr</strong>
+
+Terminal FCFF (next year) = 13,249 × 1.05 = <strong>₹13,912 Cr</strong>
+
+Stable WACC ≈ 10.5% (India WACC for mature FMCG conglomerate)
+
+TV = 13,912 / (0.105 − 0.05) = <strong>₹2,52,945 Cr (~₹2.53 Lakh Cr)</strong></div>
+    <div class="result-grid">
+      <div class="metric"><div class="metric-label">EBIT(1-t) normalized</div><div class="metric-value">₹19,877 Cr</div></div>
+      <div class="metric"><div class="metric-label">Stable FCFF</div><div class="metric-value">₹13,249 Cr</div></div>
+      <div class="metric"><div class="metric-label">Terminal Value</div><div class="metric-value">₹2,52,945 Cr</div></div>
+    </div>
+    <div class="warning">ITC's market cap as of writing is ~₹5.5 lakh crore. Our TV pre-discounting is ₹2.53 lakh crore, which when discounted back 10 years at 10.5% becomes ~₹95,000 Cr — suggesting a much larger portion of value comes from explicit near-term cash flows, which is consistent with ITC's cash-generative nature.</div>
+  </div>
+  <div class="code-label">Python — full ITC TV calculation</div>
+  <pre>pbt = 26528.82
+finance_costs = 36.35
+current_tax = 5990.17
+
+ebit = pbt + finance_costs
+effective_tax = current_tax / pbt
+normalized_tax = 0.2517    # statutory rate
+
+ebit_at = ebit * (1 - normalized_tax)
+
+capex = 1788.64
+da = 1668.88
+net_capex = capex - da
+
+gn = 0.05          # growth cap (below India G-Sec 7%)
+roic_stable = 0.15 # conservative moat persistence
+wacc_stable = 0.105
+
+rr = gn / roic_stable
+fcff_stable = ebit_at * (1 - rr)
+fcff_next = fcff_stable * (1 + gn)
+tv = fcff_next / (wacc_stable - gn)
+
+pv_tv = tv / (1 + wacc_stable)**10  # PV discounted back 10 yrs
+
+print(f"EBIT:            ₹{ebit:,.2f} Cr")
+print(f"Eff tax (actual):{effective_tax:.2%}")
+print(f"EBIT(1-t) norm:  ₹{ebit_at:,.2f} Cr")
+print(f"Reinv. Rate:     {rr:.1%}")
+print(f"FCFF (stable):   ₹{fcff_stable:,.2f} Cr")
+print(f"TV:              ₹{tv:,.0f} Cr")
+print(f"PV of TV:        ₹{pv_tv:,.0f} Cr")</pre>
+</div>
+
+<div id="panel-neocrafts" class="panel">
+  <div class="section-title">Neo-Crafts Ltd — mini valuation project</div>
+  <div class="scenario-box">Year 5 EBIT = $20M · Tax = 30% · Rf = 4% · ERP = 5.5% · Beta_stable = 1.0 · Kd = 6% · D/C = 30% · gₙ = max allowed · ROIC = WACC (competitive equilibrium)</div>
+  <div class="result-card">
+    <div class="step"><div class="step-label">1 — stable WACC</div>
+      <div class="formula">Ke = 4% + 1.0 × 5.5% = 9.5%
+Kd(AT) = 6% × (1 − 0.30) = 4.2%
+WACC = 9.5% × 0.70 + 4.2% × 0.30 = <strong>7.91%</strong></div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">2 — stable gₙ and RR</div>
+      <div class="formula">gₙ = Rf = 4%  (Damodaran maximum)
+ROIC = WACC = 7.91%  (competitive equilibrium assumed)
+RR = gₙ / ROIC = 4% / 7.91% = <strong>50.6%</strong></div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">3 — EBIT(1-t) and FCFF₆</div>
+      <div class="formula">EBIT(1-t) = 20 × (1 − 0.30) = $14M
+FCFF₆ = 14 × (1 + 0.04) × (1 − 0.506) = $7.19M</div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">4 — TV₅</div>
+      <div class="formula">TV₅ = FCFF₆ / (WACC − gₙ) = 7.19 / (0.0791 − 0.04) = <strong>$183.8M</strong></div></div>
+    <div class="step" style="margin-top:0.75rem"><div class="step-label">5 — % of enterprise value from TV</div>
+      <div class="formula">PV(FCFF₅) = 42M  (given)
+PV(TV) = TV₅ / (1 + WACC_hg)^5 = 183.8 / (1.12)^5 = $104.3M
+Total EV = 42 + 104.3 = $146.3M
+TV % of EV = 104.3 / 146.3 = <strong>71.3%</strong></div></div>
+    <div class="result-grid">
+      <div class="metric"><div class="metric-label">Stable WACC</div><div class="metric-value">7.91%</div></div>
+      <div class="metric"><div class="metric-label">FCFF₆</div><div class="metric-value">$7.19M</div></div>
+      <div class="metric"><div class="metric-label">TV₅</div><div class="metric-value">$183.8M</div></div>
+      <div class="metric"><div class="metric-label">TV % of EV</div><div class="metric-value">71.3%</div></div>
+    </div>
+    <div class="insight">TV contributes 71.3% of enterprise value — typical for a stable-growth firm. Even though gₙ = WACC (ROIC = WACC), growth still creates value through positive FCFF — the zero-value insight applies to incremental reinvested capital, not the base earnings.</div>
+  </div>
+  <div class="code-label">Python — complete Neo-Crafts solution</div>
+  <pre>ebit_y5 = 20
+tax = 0.30
+rf = 0.04
+erp = 0.055
+beta_s = 1.0
+kd = 0.06
+dc = 0.30
+ec = 1 - dc
+wacc_hg = 0.12      # given high-growth WACC
+pv_explicit = 42    # given
+
+ke = rf + beta_s * erp
+kd_at = kd * (1 - tax)
+wacc_s = ke * ec + kd_at * dc
+
+gn = rf             # max allowed (Damodaran cap)
+roic = wacc_s       # ROIC = WACC (competitive equilibrium)
+rr = gn / roic
+
+ebit_at = ebit_y5 * (1 - tax)
+fcff6 = ebit_at * (1 + gn) * (1 - rr)
+tv5 = fcff6 / (wacc_s - gn)
+
+pv_tv = tv5 / (1 + wacc_hg)**5
+total_ev = pv_explicit + pv_tv
+tv_pct = pv_tv / total_ev
+
+print(f"Stable WACC:  {wacc_s:.2%}")
+print(f"gn (capped):  {gn:.2%}")
+print(f"RR:           {rr:.1%}")
+print(f"FCFF6:        ${fcff6:.2f}M")
+print(f"TV5:          ${tv5:.1f}M")
+print(f"PV(TV5):      ${pv_tv:.1f}M")
+print(f"Total EV:     ${total_ev:.1f}M")
+print(f"TV % of EV:   {tv_pct:.1%}")</pre>
+</div>
+
+</div>
+
+<script>
+function switchTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
